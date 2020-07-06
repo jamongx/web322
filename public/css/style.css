@@ -1,0 +1,354 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat',sans-serif;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #333;
+}
+
+.menu ul {
+	list-style: none;
+  display: flex;
+}
+
+
+.menu li {
+	position: relative;
+	width: 100%;
+  text-align: center;
+  flex: 3;
+}
+
+.menu a {
+  display: flex;
+  flex-flow: row wrap;
+	align-items: center;
+  justify-content: flex-start;
+	color: #fff;
+	height: 50px;
+	font-family: Poppins;
+	font-weight: bold;
+	text-decoration: none;
+  text-transform: uppercase;
+  padding: 10px;
+}
+
+.menu a:hover {
+	background-color: #333;
+	color: #fff;
+}
+
+.menu li:hover .dropdown-1 > li {
+	display: block;
+	top: 0;
+}
+
+.dropdown-1 li {
+	display: none;
+	position: relative;
+}
+
+.dropdown-1 {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.dropdown-1 li:hover {
+	display:block;
+}
+
+
+
+/*** body ***/
+body {
+  margin: 0;
+  font-family: sans-serif;
+  position: relative;
+  padding-bottom: 280px;
+  min-height: 100vh;
+}
+
+/* Clear floats after the columns */
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 300px;
+}
+
+h2 {
+  margin:0;
+  padding:0;
+  font-size:1.5em;
+  text-align:center;
+}
+
+.hero h1 {
+  /* Text styles */
+  font-size: 5em;
+  
+  /* Margins */
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+.hero-home {
+  /* Sizing */
+  width: 100vw;
+  height: 30vh;
+  
+  /* Flexbox stuff */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Text styles */
+  text-align: center;
+  color:#e76dcf; /* ADD THIS LINE */
+  
+  /* Background styles */
+  background-image: url('/img/hero/home.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.hero-cuisine {
+  /* Sizing */
+  width: 100vw;
+  height: 30vh;
+  
+  /* Flexbox stuff */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Text styles */
+  text-align: center;
+  color: #c00000; /* ADD THIS LINE */
+  
+  /* Background styles */
+  background-image: url('/img/hero/cuisine.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+/*** body flex container ***/
+body .flex-cuisine {
+  display:flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 0;
+}
+
+body .flex-cuisine div {
+  /*flex-grow flex-shrink flex-basis*/
+  /*flex: 0 1 auto;*/
+  flex: 0 1 25%;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 10px 10px 0px;
+  font-size: 18px;
+  width: 350px;
+}
+
+body .flex-contents {
+  display:flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 0;
+  font-size: 25px;
+  background-color: #e3e6bf;
+}
+
+body .flex-contents div {
+  flex: 0 1 25%;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 20px;
+}
+
+
+/*** body form container ***/
+.flex-input {
+  display:flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;  
+}
+
+.flex-input form {
+  /*flex-grow flex-shrink flex-basis*/
+  /*flex: 0 1 auto;*/
+  flex: 0 1 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-size: 18px;
+  width: 350px;
+  margin-top: 100px;
+}
+
+.flex-input form img {
+  max-width: 40px;
+  height: auto;
+  border: none;
+}
+
+.flex-input form .errorMsg {
+  font-size: 16px;
+  color:#c00000; /* ADD THIS LINE */
+}
+
+.flex-input form input {
+  width: 300px;
+  line-height: 13px;
+  padding:10px;
+  box-sizing: border-box;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  border: none;
+  outline:none;  
+  border:1px solid gray;
+  font-size:13px;
+  border-radius:5px;
+}
+
+.flex-input form input [type=submit] {
+  font-size:16px;
+  margin-top:30px;
+  color:#fff;
+  font-weight:bold;
+  background:#cc0033;
+  border:1px solid #fff;
+  cursor:pointer;
+}
+
+.flex-input form input[type=submit]:hover {
+  background:orange;
+}
+
+
+/*** body dashboard container ***/
+.flex-dashboard {
+  display:flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;  
+}
+
+.flex-dashboard div {
+  /*flex-grow flex-shrink flex-basis*/
+  /*flex: 0 1 auto;*/
+  flex: 0 1 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-size: 18px;
+  width: 350px;
+  margin-top: 100px;
+}
+
+
+
+
+/** footer **/
+footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  color: #d9d9d9;
+  background-color: #333;
+}
+
+footer .flex-container2 {
+
+  display:flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+
+}
+
+footer .flex-container2 div {
+  flex: 0 1 auto;
+  text-align: center;
+  padding: 10px;
+  font-size: 10;
+  width: 350px;
+}
+
+
+.foot-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.foot-menu a:visited {text-decoration: none; color:#d9d9d9;}
+.foot-menu a:link    {text-decoration: none; color: #d9d9d9;}
+.foot-menu a:active  {text-decoration: none; color: #d9d9d9;}
+.foot-menu a:hover   {text-decoration: underline; color: #d9d9d9;}
+
+
+footer form {
+  margin-top: 0;
+}
+
+footer input {
+  width: 100%;
+  line-height: 13px;
+  padding:10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  border: none;
+  outline:none;  
+  border:1px solid gray;
+  font-size:13px;
+  border-radius:5px;
+}
+
+footer input [type=submit] {
+  font-size:16px;
+  margin-top:30px;
+  color:#fff;
+  font-weight:bold;
+  background:#cc0033;
+  border:1px solid #fff;
+  cursor:pointer;
+}
+
+footer input[type=submit]:hover {
+  background:orange;
+}
+
+
+
+
+@media all and (max-width: 1000px) {
+  .menu ul { flex-wrap: wrap;}
+  .menu li { flex: 1 1 50%;}
+}
+
+@media all and (max-width: 480px) {
+  .menu li { flex-basis: 100%;}
+}

@@ -1,0 +1,19 @@
+
+<div class="hero-cuisine">
+    <h1>Our Cuisine Package</h1>
+</div>
+
+<h2>{{title}}</h2>
+
+<div class="flex-cuisine">
+    {{#each cuisines }}
+    <div>
+        <img src="{{this.image}}"></img></br>
+        {{this.name}}, {{this.country}}</br>
+        CAD : {{this.price}}</br>
+        Meals : {{this.meals}}</br>
+        Top Ranked: {{this.rank}}</br>        
+        {{this.synop}}</br>
+    </div>
+    {{/each}}
+</div>

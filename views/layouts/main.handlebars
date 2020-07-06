@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <header>
+        <div class="menu">
+            <ul>
+                <li class="item"><a href="/">Home</a></li>
+                <li class="item"><a href="/cuisines/all">Cuisines</a>
+                    <ul class="dropdown-1">
+                        <li><a href="/cuisines/korean">Korean Cuisine</a></li>
+                        <li><a href="/cuisines/italian">Italian Cuisine</a></li>
+                        <li><a href="/cuisines/mexican">Mexican Cuisine</a></li>
+                        <li><a href="/cuisines/indian">Indian Cuisine</a></li>
+                    </ul>
+                </li>
+                <li class="item"><a href="/login">Login</a></li>
+                <li class="item"><a href="/registration">Registration</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        {{{body}}}
+    </main>
+
+    <footer>
+        <div class="flex-container2">
+            <div class="social">
+                <p>About us</p>
+                <a href="https://facebook.com/jamongx"><i class="fa fa-facebook-square" style="font-size:20px;color:white;"></i></a>
+                <a href="https://instagram.com/jamongx01"><i class="fa fa-instagram" style="font-size:20px;color:white;"></i></a>
+                <a href="https://www.linkedin.com/in/jamongx"><i class="fa fa-linkedin-square" style="font-size:20px;color:white;"></i></a>
+                <a href="https://github.com/jamongx"><i class="fa fa-github" style="font-size:20px;color:white;"></i></a>
+            </div>
+
+            <div class="foot-menu">
+                <p>Our Menu</p>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/cuisines">All Cuisines</a></li>
+                    <li><a href="/cuisines/korean">Korean Cuisine</a></li>
+                    <li><a href="/cuisines/italian">Italian Cuisine</a></li>
+                    <li><a href="/cuisines/mexican">Mexican Cuisine</a></li>
+                    <li><a href="/cuisines/indian">Indian Cuisine</a></li>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/registration">Registration</a></li>
+                </ul>
+            </div>
+
+            <div class="subscribe">
+                <form action="https://formspree.io/mdoljwzw" method="POST">
+                    <p>Subscribe to newsletters</p>
+                    <input id="name" type="text" name="name" placeholder="Enter Name">
+                    <input id="email" type="email" name="_replyto" placeholder="Enter Email">
+                    <input type="submit" value="SUBSCRIBE">
+                </form>
+            </div>
+        </div>
+        <div class="bottom">
+            <center>
+                <span class="credit">Created by Jaemo Yang</a> | </span>
+                <i class="	fa fa-copyright" style="font-size:10;color:white;"> 2020 All Rights Reserved.</i>
+            </center>
+        </div>
+    </footer>
+
+</body>
+
+</html>

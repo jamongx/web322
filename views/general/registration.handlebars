@@ -1,0 +1,26 @@
+<div class="flex-input">
+    <form action="/registration" method="POST">        
+        <h3>Create Account</h3></br>
+
+        <div class="logos">
+            <img src="/img/social_login/facebook.jpg" alt="item facebook">
+            <img src="/img/social_login/google.jpg" alt="item google+">
+            <img src="/img/social_login/twitter.jpg" alt="item twitter">
+            <img src="/img/social_login/linkedin.jpg" alt="item linkedin">
+        </div>
+
+        <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" value="{{formData.firstName}}">
+        <div class="errorMsg">{{formData.errorFirst}}</div>
+        
+        <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" value="{{formData.lastName}}">
+        <div class="errorMsg">{{formData.errorLast}}</div>
+        
+        <input type="text" id="email" name="email" placeholder="Enter Email" value="{{formData.email}}"> 
+        <div class="errorMsg">{{formData.errorEmail}}</div>   
+        
+        <input type="password" id="password" name="password" placeholder="Enter Password" value="{{formData.password}}">
+        <div class="errorMsg">{{formData.errorPassword}}</div>
+        
+        <input type="submit" value="Sign In">
+    </form>
+</div>
