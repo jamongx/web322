@@ -26,13 +26,9 @@ router.get("/login",(req,res)=>{
 });
 
 
-//process login form for when user submits form
-// res.status(422).json({ errors: errors.array() });
-// {"errors":[{"value":"","msg":"Invalid value","param":"email","location":"body"},
-//            {"value":"","msg":"Invalid value","param":"password","location":"body"}]}
 router.post("/login", [
-    check('email').not().isEmpty(),
-    check('password').not().isEmpty()
+    check('email').not().isEmpty().withMessage('Email is required.'),
+    check('password').not().isEmpty().withMessage('Password is required.')
 ], (req,res)=>{
 
     const {email,password} = req.body;
@@ -41,15 +37,15 @@ router.post("/login", [
     if (!errors.isEmpty()) {
         const temp = [];
         errors.array().forEach(function(err) {
-            temp.push(err.param +" " +err.msg);
+            temp.push(err.msg);
         });
         res.render("general/login", {
             title:"Login Page",
             formData: {
                 email: email,
                 password: password,
-                errorEmail: temp.filter(name => name.includes('email')),
-                errorPassword: temp.filter(name => name.includes('password'))
+                errorEmail: temp.filter(name => name.includes('Email')),
+                errorPassword: temp.filter(name => name.includes('Password'))
             }
         });
     }
@@ -69,25 +65,35 @@ router.get("/registration",(req,res)=>{
 
 
 //process registration form for when user submits form
-router.post("/registration", [
-    check('firstName').not().isEmpty().withMessage('First name is required.'),
-    check('lastName').not().isEmpty().withMessage('Last name is required.'),
-    check('email').isEmail().withMessage('Email address is required.'),
-    check('password')
-        .isLength({min:6, max:12}).withMessage('must enter a password that is 6 to 12 characters')
-        .isAlphanumeric().withMessage('must have letters and numbers only')
-], (req,res)=>{
+router.post("/registration", (req,res)=>{
 
     const {firstName,lastName,email,password} = req.body;
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        
-        const temp = [];
-        errors.array().forEach(function(err) {
-            temp.push(err.param +" " +err.msg);
-        });
+    const errors = [];
+    if (firstName.length <= 0) {
+        errors.push("First name is required.");
+    }
+    if (lastName.length <= 0) {
+        errors.push("Last name is required.");
+    }
+    if (email.length <= 0) {
+        errors.push("Email address is required.");
+    }
+    else {
+        if(!/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(email)) {
+            errors.push("Wrong Email address format");
+        }
+    }
+    if (password.length <= 0) {
+        errors.push("Password is required.");
+    }
+    else {
+        if(!/^[a-zA-Z0-9]{6,12}$/.test(password)) {
+            errors.push("Enter a Password 6-12 digits using a combination of numbers and letters");
+        }
+    }
 
+    if (errors.length > 0) {
         res.render("general/registration", {
             title:"Registration Page",
             formData: {
@@ -95,10 +101,10 @@ router.post("/registration", [
                 lastName: lastName,
                 email: email,
                 password: password,
-                errorFirst: temp.filter(name => name.includes('firstName')),
-                errorLast: temp.filter(name => name.includes('lastName')),
-                errorEmail: temp.filter(name => name.includes('email')),
-                errorPassword: temp.filter(name => name.includes('password'))
+                errorFirst: errors.filter(name => name.includes('First')),
+                errorLast: errors.filter(name => name.includes('Last')),
+                errorEmail: errors.filter(name => name.includes('Email')),
+                errorPassword: errors.filter(name => name.includes('Password'))
             }
         });
     }
@@ -108,12 +114,11 @@ router.post("/registration", [
         const msg = {
             from: `jamongx@gmail.com`,
             to: `${email}`,
-            subject: 'Contact Us Form Submit',
+            subject: 'Registration Complete!',
             html: 
-            `Subscriber's Full Name ${firstName} ${lastName} <br>
-            Subscriber's Email Address ${email} <br>
-            Thank you for signing up! <br>
-            Registration Complete! <br>`,
+            `Subscriber's Full Name: ${firstName} ${lastName} <br>
+            Subscriber's Email Address: ${email} <br>
+            Thank you for signing up! <br>`,
         };
 
         sgMail.send(msg)
