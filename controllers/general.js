@@ -114,7 +114,7 @@ router.post("/registration", (req,res)=>{
         const msg = {
             from: `jamongx@gmail.com`,
             to: `${email}`,
-            subject: 'Registration Complete!',
+            subject: '[Jason\'s Cuisines] Registration Complete!',
             html: 
             `Subscriber's Full Name: ${firstName} ${lastName} <br>
             Subscriber's Email Address: ${email} <br>
