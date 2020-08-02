@@ -19,3 +19,20 @@ const content =
 content.init();
 module.exports = content;
 //export default = ServiceDB // ES6 Modules syntax
+
+
+/*const mongoose = require('mongoose');
+
+let Schema = mongoose.Schema;
+
+let contentSchema = new Schema({
+    rank:    { type: Boolean, default: false },
+    country: { type: String },
+    meals:   { type: Number },
+    name:    { type: String, index: true, unique: true },
+    price:   { type: Number },
+    image:   { type: String },
+    synop:   { type: String }
+});
+
+module.exports = mongoose.model('Content', contentSchema);*/

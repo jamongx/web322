@@ -1,0 +1,40 @@
+<div class="flex-input">
+    <form action="/dashboard/update" method="POST" enctype="multipart/form-data">        
+        <h3>Update Cuisine Package</h3></br>
+
+        <label for="rank">Rank</label><br>
+        <select name="rank" id="rank">
+            <option value="false">false</option>
+            <option value="true">true</option>
+        </select><br>
+
+        <label for="country">Country</label><br>
+        <select name="country" id="country">
+            <option value="Korean">Korean</option>
+            <option value="Italian">Italian</option>
+            <option value="Mexican">Mexican</option>
+            <option value="Indian">Indian</option>
+        </select><br>
+
+        <input type="hidden" id="_id" name="_id" value="{{formData._id}}">
+
+        <input type="number" id="meals" name="meals" min="1" max="5" placeholder="Enter Meals" value="{{formData.meals}}">
+        <div class="errorMsg">{{formData.errorMeals}}</div>
+
+        <input type="text" id="name" name="name" placeholder="Enter Name" value="{{formData.name}}">
+        <div class="errorMsg">{{formData.errorName}}</div>
+
+        <input type="number" id="price" name="price" placeholder="Enter Price" value="{{formData.price}}">
+        <div class="errorMsg">{{formData.errorPrice}}</div>
+
+        <img src="{{formData.image}}"></img></br>
+        <input type="file" id="image" name="image" accept=".jpg">
+        <div class="errorMsg">{{formData.errorImage}}</div>
+        
+        <textarea id="synop" name="synop" rows="10" cols="30" >{{formData.synop}}</textarea>
+        <div class="errorMsg">{{formData.errorSynop}}</div>
+        <br>
+        
+        <input type="submit" value="Submit">
+    </form>
+</div>

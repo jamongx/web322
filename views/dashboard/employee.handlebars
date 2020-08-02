@@ -1,0 +1,30 @@
+<div class="flex-dash">
+    <div>
+        <h3>Cuisine Package List</h3></br>
+    </div>
+    <table>
+        <thead>
+            <th>Rank</th>
+            <th>Country</th>
+            <th>Meals</th>
+            <th>Name</th>
+            <th>Price</th>
+        </thead>
+            <!-- <th>synop</th> -->
+        <tbody>
+            {{#each cuisines }}
+            <tr>
+                <td>{{this.rank}}</td>
+                <td>{{this.country}}</td>
+                <td>{{this.meals}}</td>
+                <td><a href='/dashboard/read?_id={{this._id}}'>{{this.name}}</a></td>
+                <td>{{this.price}}</td>
+                <!-- <td>{{this.synop}}</td> -->
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    <form action="/dashboard/create">
+        <input type="submit" value="Create Package">
+    </form>
+</div>

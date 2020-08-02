@@ -21,8 +21,17 @@
                         <li><a href="/cuisines/indian">Indian Cuisine</a></li>
                     </ul>
                 </li>
-                <li class="item"><a href="/login">Login</a></li>
-                <li class="item"><a href="/registration">Registration</a></li>
+                {{#if user.authorized}}
+                    <li class="item"><a href="/logout">Logout</a></li>
+                    {{#if user.clerk}}
+                        <li class="item"><a href="/dashboard/employee">Dashboard</a></li>
+                    {{else}}
+                        <li class="item"><a href="/shopping/customer">Shopping Cart</a></li>                    
+                    {{/if}}                 
+                {{else}}
+                    <li class="item"><a href="/login">Login</a></li>
+                    <li class="item"><a href="/registration">Registration</a></li>
+                {{/if}}
             </ul>
         </div>
     </header>
@@ -50,8 +59,17 @@
                     <li><a href="/cuisines/italian">Italian Cuisine</a></li>
                     <li><a href="/cuisines/mexican">Mexican Cuisine</a></li>
                     <li><a href="/cuisines/indian">Indian Cuisine</a></li>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/registration">Registration</a></li>
+                    {{#if user.authorized}}
+                        <li class="item"><a href="/logout">Logout</a></li>
+                        {{#if user.clerk}}
+                            <li class="item"><a href="/dashboard/employee">Dashboard</a></li>
+                        {{else}}
+                            <li class="item"><a href="/shopping/customer">Shopping Cart</a></li>                    
+                        {{/if}}                 
+                    {{else}}
+                        <li class="item"><a href="/login">Login</a></li>
+                        <li class="item"><a href="/registration">Registration</a></li>
+                    {{/if}}
                 </ul>
             </div>
 

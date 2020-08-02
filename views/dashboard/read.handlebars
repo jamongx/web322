@@ -1,0 +1,15 @@
+<div class="flex-input">
+    <form action="/dashboard/update">
+        <h3>Read Cuisine Package</h3></br>
+        <img src="{{formData.image}}"></img></br>
+        <input readonly value={{formData.name}}></br>
+        <input readonly value={{formData.country}}></br>
+        <input readonly value="CAD: {{formData.price}}"></br>
+        <input readonly value="MEALS: {{formData.meals}}"></br>
+        <input readonly value="Top Ranked: {{formData.rank}}"></br>        
+        <textarea readonly rows="10" cols="30">{{formData.synop}}</textarea></br>
+        <input type="hidden" id="_id" name="_id" value="{{formData._id}}"/>
+        <input type="submit" value="Edit & Change">
+    </form>
+</div>
+
