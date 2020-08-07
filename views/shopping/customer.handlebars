@@ -1,11 +1,32 @@
 <div class="flex-dash">
     <div>
-        <h1>{{user.firstName}} {{user.lastName}}</h1>
-        <h1>{{user.email}}</h1>
-        </br>
-        <h2>Thank you for signing up! </h2>
-        <h2>Registration Complete!</h2>
+        <h3>Shopping Cart</h3></br>
     </div>
+    <table>
+        <thead>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Meals</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </thead>
+        <tbody>
+            {{#each items }}
+            <tr>
+                <td><img src="{{this.cuisine.image}}" style="width:80px;height:auto;border:0;" ></img></td>
+                <td>{{this.cuisine.name}}</td>
+                <td>{{this.cuisine.meals}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.quantity}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <br><h3>Total Quantity: {{totalQty}}</h3></br>
+    <h3>Total Price: {{totalPrice}}</h3></br>
+    <form action="/shopping/purchase" method="POST">
+        <div class="cartMsg">{{formData.cartMsg}}</div>
+        <input type="submit" value="Place your order">
+    </form>
 </div>
-
-

@@ -1,9 +1,7 @@
 const express = require('express')
 const router = express.Router();
-// const { check, validationResult } = require('express-validator');
 
 const Cuisine = require('../models/cuisines');
-
 const multer = require('multer');
 const upload = multer({
     storage: multer.diskStorage({
@@ -16,23 +14,13 @@ const upload = multer({
     }),
 });
 
-router.get("/customer", (req, res) => {
-
-    res.render("dashboard/customer", {
-        title:"Customer's Dashboard Page",
-        user: req.session.user
-    });
-});
-
-
 router.get("/employee", (req, res) => {
 
-    Cuisine.find()
+    Cuisine.find().sort({country:1})
     .exec()
     .then((cuisine) => {
         let all_list = [];
         cuisine.forEach(element => {
-
             all_list.push({
                 _id: element._id,
                 rank: element.rank,
@@ -47,7 +35,6 @@ router.get("/employee", (req, res) => {
 
         res.render("dashboard/employee", {
             title:"Employee's Dashboard Page",
-            user: req.session.user,
             cuisines:all_list
         });
     })
@@ -61,8 +48,7 @@ router.get("/employee", (req, res) => {
 router.get("/create", (req,res) => {
 
     res.render("dashboard/create",{
-        title:"Create Cuisine Package Page",
-        user: req.session.user
+        title:"Create Cuisine Package Page"
     });
 });
 
@@ -70,19 +56,22 @@ router.get("/create", (req,res) => {
 //process registration form for when user submits form
 // image -> name of input
 router.post("/create", upload.single("image"), (req,res)=>{
+
     const {rank,country,meals,name,price,image,synop} = req.body;
 
     const errors = [];
     if (name.length <= 0) {
         errors.push("Name is required.");
     }
+    if (meals <= 0) {
+        errors.push("Meals should be bigger than 0");
+    }
     if (price <= 0) {
         errors.push("Price should be bigger than 0");
     }
-    /*TypeError: Cannot read property 'length' of undefined
-    if (image.length <= 0) {
+    if (image === undefined) {
         errors.push("Image is required.");
-    }*/
+    }
     if (synop.length <= 0) {
         errors.push("Synop is required.");
     }
@@ -90,7 +79,6 @@ router.post("/create", upload.single("image"), (req,res)=>{
     if (errors.length > 0) {
         res.render("dashboard/create",{
             title:"Create Cuisine Package Page",
-            user: req.session.user,
             formData: {
                 rank: rank,
                 country: country,
@@ -98,8 +86,10 @@ router.post("/create", upload.single("image"), (req,res)=>{
                 name: name,
                 price: price,
                 synop: synop,
+                errorMeals: errors.filter(name => name.includes('Meals')), 
                 errorName: errors.filter(name => name.includes('Name')),
                 errorPrice: errors.filter(name => name.includes('Price')),
+                errorImage: errors.filter(name => name.includes('Image')),
                 errorEmail: errors.filter(name => name.includes('Email')),
                 errorSynop: errors.filter(name => name.includes('Synop'))
             }
@@ -137,7 +127,6 @@ router.get("/read",(req,res)=>{
     .then((cuisine) => {
         res.render("dashboard/read", {
             title : "Read The Detail Cuisine Page",
-            user: req.session.user,
             formData: {
                 _id: cuisine._id,
                 rank: cuisine.rank,
@@ -156,71 +145,6 @@ router.get("/read",(req,res)=>{
 });
 
 
-//process registration form for when user submits form
-// image -> name of input
-router.post("/read", upload.single("image"), (req,res)=>{
-
-    console.log("read, req.body");
-    console.log(req.body);
-
-    const {rank,country,meals,name,price,image,synop} = req.body;
-
-    const errors = [];
-    if (name.length <= 0) {
-        errors.push("Name is required.");
-    }
-    if (price <= 0) {
-        errors.push("Price should be bigger than 0");
-    }
-    /*TypeError: Cannot read property 'length' of undefined
-    if (image.length <= 0) {
-        errors.push("Image is required.");
-    }*/
-    if (synop.length <= 0) {
-        errors.push("Synop is required.");
-    }
-
-    if (errors.length > 0) {
-        res.render("dashboard/update",{
-            title:"Update Cuisine Package Page",
-            user: req.session.user,
-            formData: {
-                rank: rank,
-                country: country,
-                meals: meals,
-                name: name,
-                price: price,
-                synop: synop,
-                errorName: errors.filter(name => name.includes('Name')),
-                errorPrice: errors.filter(name => name.includes('Price')),
-                errorEmail: errors.filter(name => name.includes('Email')),
-                errorSynop: errors.filter(name => name.includes('Synop'))
-            }
-        });
-    }
-    else {
-        const newCuisine = new Cuisine ({
-            rank:    rank, 
-            country: country,
-            meals:   meals,
-            name:    name,
-            price:   price,
-            image:   req.file.destination.substr(6) +req.file.originalname, // remove public (sizeof->6)
-            synop:   synop
-        });
-
-        newCuisine.save()
-        .then((cuisine) => {
-            res.send('업로드 성공!');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-
-    }
-});
-
-
 //route update handlebars page
 router.get("/update", (req,res) => {
     Cuisine.findById(req.query._id)
@@ -228,7 +152,6 @@ router.get("/update", (req,res) => {
     .then((cuisine) => {
         res.render("dashboard/update", {
             title:"Update Cuisine Package Page",
-            user: req.session.user,
             formData: {
                 _id: cuisine._id,
                 rank: cuisine.rank,
@@ -258,13 +181,12 @@ router.post("/update", upload.single("image"), (req,res)=>{
     if (name.length <= 0) {
         errors.push("Name is required.");
     }
+    if (meals <= 0) {
+        errors.push("Meals should be bigger than 0");
+    }
     if (price <= 0) {
         errors.push("Price should be bigger than 0");
     }
-    /*TypeError: Cannot read property 'length' of undefined
-    if (image.length <= 0) {
-        errors.push("Image is required.");
-    }*/
     if (synop.length <= 0) {
         errors.push("Synop is required.");
     }
@@ -272,7 +194,6 @@ router.post("/update", upload.single("image"), (req,res)=>{
     if (errors.length > 0) {
         res.render("dashboard/update", {
             title:"Update Cuisine Package Page",
-            user: req.session.user,
             formData: {
                 _id: _id,
                 rank: rank,
@@ -282,6 +203,7 @@ router.post("/update", upload.single("image"), (req,res)=>{
                 price: price,
                 image: image,
                 synop: synop,
+                errorMeals: errors.filter(name => name.includes('Meals')), 
                 errorName: errors.filter(name => name.includes('Name')),
                 errorPrice: errors.filter(name => name.includes('Price')),
                 errorEmail: errors.filter(name => name.includes('Email')),
@@ -298,7 +220,6 @@ router.post("/update", upload.single("image"), (req,res)=>{
         Cuisine.findByIdAndUpdate( _id, setter )
         .exec()
         .then((cuisine) => {
-            console.log(cuisine);
             res.redirect(`./read/?_id=${cuisine._id}`);
         })
         .catch(err=>{
@@ -306,5 +227,18 @@ router.post("/update", upload.single("image"), (req,res)=>{
         });
     }
 });
+
+
+router.get("/delete", (req,res) => {
+    Cuisine.deleteOne( {_id: req.query._id} )
+    .exec()
+    .then(() => {
+        res.redirect(`./employee`);
+    })
+    .catch(err=>{
+        console.log(err);
+    });
+});
+
 
 module.exports = router;

@@ -16,12 +16,23 @@
 <br/>
 
 <div class="flex-cuisine">
-    {{#each cuisines }}
-    <div>
-        <img src="{{this.image}}"></img></br>
-        {{this.name}} </br>
-        CAD : {{this.price}} </br>
-        Meals : {{this.meals}} </br>
-    </div>
-    {{/each}}
+    {{#if user.clerk}}
+        {{#each cuisines }}
+        <div>
+            <a href='/dashboard/read?_id={{this._id}}'><img src="{{this.image}}"></img></a></br>
+            {{this.name}} </br>
+            CAD : {{this.price}} </br>
+            Meals : {{this.meals}} </br>
+        </div>
+        {{/each}}
+    {{else}}
+        {{#each cuisines }}
+        <div>
+            <a href='/shopping/purchase?_id={{this._id}}'><img src="{{this.image}}"></img></a></br>
+            {{this.name}} </br>
+            CAD : {{this.price}} </br>
+            Meals : {{this.meals}} </br>
+        </div>
+        {{/each}}
+    {{/if}}
 </div>

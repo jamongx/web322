@@ -4,22 +4,22 @@
     </div>
     <table>
         <thead>
+            <th>Image</th>
             <th>Rank</th>
             <th>Country</th>
             <th>Meals</th>
             <th>Name</th>
             <th>Price</th>
         </thead>
-            <!-- <th>synop</th> -->
         <tbody>
             {{#each cuisines }}
             <tr>
+                <td><img src="{{this.image}}" style="width:80px;height:auto;border:0;" ></img></td>
                 <td>{{this.rank}}</td>
                 <td>{{this.country}}</td>
                 <td>{{this.meals}}</td>
                 <td><a href='/dashboard/read?_id={{this._id}}'>{{this.name}}</a></td>
                 <td>{{this.price}}</td>
-                <!-- <td>{{this.synop}}</td> -->
             </tr>
         {{/each}}
         </tbody>

@@ -2,6 +2,8 @@ const express = require("express");
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
 
 //mongodb atlas mode for initialize
 const databaseModel = require("./models/database");
@@ -23,24 +25,32 @@ app.use(express.static('public'));
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true
-    /*cookie: {
-        maxAge : two_hour,
-        sameSite: true,
-        secure: IN_PROD
-    }*/
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    cookie: { maxAge: 60 * 60 * 1000 }
 }));
 
 //load controllers
 const generalController   = require("./controllers/general");
 const cuisineController   = require("./controllers/cuisine");
 const dashboardController = require("./controllers/dashboard");
+const shoppingController  = require("./controllers/shopping");
+
+// global variable
+app.use(function(req, res, next) {
+    // res.locals.session = req.session;
+    res.locals.authorized = req.session.authorized;
+    res.locals.user = req.session.user;
+    res.locals.cart = req.session.cart;
+    next();
+});
 
 //map each controller to the app object
-
 app.use("/", generalController);
 app.use("/cuisines", cuisineController);
 app.use("/dashboard", dashboardController);
+app.use("/shopping", shoppingController);
+
 
 // parameter: id, passwrod
 databaseModel.init(process.env.MONGO_DB)

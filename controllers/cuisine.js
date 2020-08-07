@@ -27,7 +27,6 @@ router.get("/all",(req,res)=>{
 
         res.render("cuisines/cuisineList",{
             title:"All Cuisines",
-            user: req.session.user,
             cuisines:all_list
         });
     })
@@ -59,7 +58,6 @@ router.get("/korean",(req,res)=>{
 
         res.render("cuisines/cuisineList",{
             title:"Korean Cuisines",
-            user: req.session.user,
             cuisines:korean
         });
     })
@@ -91,7 +89,6 @@ router.get("/italian",(req,res)=>{
 
         res.render("cuisines/cuisineList",{
             title:"Italian cuisines",
-            user: req.session.user,
             cuisines:italian
         });
     })
@@ -123,7 +120,6 @@ router.get("/mexican",(req,res)=>{
 
         res.render("cuisines/cuisineList",{
             title:"Mexican cuisines",
-            user: req.session.user,
             cuisines:mexican
         });
     })
@@ -154,7 +150,6 @@ router.get("/indian",(req,res)=>{
 
         res.render("cuisines/cuisineList",{
             title:"Indian cuisines",
-            user: req.session.user,
             cuisines:indian
         });
     })
@@ -164,43 +159,3 @@ router.get("/indian",(req,res)=>{
 });
 
 module.exports = router;
-
-
-//=========================================================================
-//const databaseModel = require("../models/database"); //mongodb atlas mode
-//const cuisineModel = require("../models/cuisines"); //load cuisineModel
-/*res.render("cuisines/cuisineList",{
-    title:"Korean Cuisines",
-    user: req.session.user,
-    cuisines:cuisineModel.getCuisines("Korean")
-});
-});
-
-router.get("/italian",(req,res)=>{
-
-res.render("cuisines/cuisineList",{
-    title:"Italian cuisines",
-    user: req.session.user,
-    cuisines:cuisineModel.getCuisines("Italian")
-});
-});
-
-router.get("/mexican",(req,res)=>{
-
-res.render("cuisines/cuisineList",{
-    title:"Mexican cuisines",
-    user: req.session.user,
-    cuisines:cuisineModel.getCuisines("Mexican")
-});
-});
-
-router.get("/indian",(req,res)=>{
-
-res.render("cuisines/cuisineList",{
-    title:"Indian cuisines",
-    user: req.session.user,
-    cuisines:cuisineModel.getCuisines("Indian")
-});
-});
-
-module.exports = router;*/

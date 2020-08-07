@@ -18,6 +18,7 @@ router.get("/",(req,res)=>{
         cuisine.forEach(element => {
 
             ranks.push({
+                _id: element._id,
                 rank: element.rank,
                 coutry: element.coutry,
                 meals: element.meals,
@@ -30,7 +31,6 @@ router.get("/",(req,res)=>{
 
         res.render("general/home", {
             title : "Home Page",
-            user: req.session.user,
             contents:contentModel.getContents(),
             cuisines:ranks
         });
@@ -46,9 +46,9 @@ router.get("/login",(req,res)=>{
 
     res.render("general/login",{
         title:"Login Page",
-        user: req.session.user,
     });
 });
+
 
 router.post("/login", [
     check('email').not().isEmpty().withMessage('Email is required.'),
@@ -81,14 +81,13 @@ router.post("/login", [
                 if(!err && result) {
                     // (1) express-session을 사용하면 request.session 이라는 객체가 생성됩니다.
                     // 해당하는 객체에 property를 할당함으로써 세션에 값을 줍니다.
+                    req.session.authorized = true;
                     req.session.user = {
                         firstName: user.firstName,
                         lastName: user.lastName,
                         email: user.email,
-                        clerk: user.clerk,
-                        authorized: true
+                        clerk: user.clerk
                     };
-
                     //세션 스토어가 이루어진 후 redirect를 해야함.
                     req.session.save(function() {
                         // (2) 세션을 세션 스토어에 저장이 끝나면 function()이 실행됩니다.
@@ -100,8 +99,6 @@ router.post("/login", [
                 else {
                     res.render("general/login", {
                         title:"Login Page",
-                        // user: req.session.user, 로그인화면을 다시 출력하는것이기 때문에 불필요하다.
-                        // 
                         formData: {
                             email: email,
                             password: password,
@@ -121,29 +118,17 @@ router.post("/login", [
 //logout route
 router.get("/logout",(req,res)=>{
 
-    /*req.session.destroy();
-    res.render("general/logout", {
-        title:"Logout Page",
-        user: req.session.user,
-        firstName: req.query.param1,
-        lastName: req.query.param2,
-        email: req.query.param3
-    });*/
- 
-    delete req.session.user;
-    req.session.save(function() {
+    req.session.destroy(function(err){
         res.redirect("./login");
     });
 });
-
 
 
 //registration route
 router.get("/registration",(req,res)=>{
 
     res.render("general/registration",{
-        title:"Registration Page",
-        user: req.session.user
+        title:"Registration Page"
     });
 });
 
@@ -239,7 +224,6 @@ router.post("/registration", (req,res)=>{
                     .then(() => {
                         res.render("general/registration", {
                             title:"Registration Page",
-                            user: req.session.user,
                             formData: {
                                 firstName: newUser.firstName,
                                 lastName: newUser.lastName,
@@ -258,4 +242,3 @@ router.post("/registration", (req,res)=>{
 });
 
 module.exports = router;
-// const cuisineModel = require("../models/cuisines");

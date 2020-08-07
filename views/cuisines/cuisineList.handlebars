@@ -6,14 +6,31 @@
 <h2>{{title}}</h2>
 
 <div class="flex-cuisine">
-    {{#each cuisines }}
-    <div>
-        <img src="{{this.image}}"></img></br>
-        {{this.name}}, {{this.country}}</br>
-        CAD : {{this.price}}</br>
-        Meals : {{this.meals}}</br>
-        Top Ranked: {{this.rank}}</br>        
-        {{this.synop}}</br>
-    </div>
-    {{/each}}
+    {{#if user.clerk}}
+        {{#each cuisines }}
+        <div>
+            <a href='/dashboard/read?_id={{this._id}}'><img src="{{this.image}}"></img></a></br>
+            {{this.name}}, {{this.country}}</br>
+            CAD : {{this.price}}</br>
+            Meals : {{this.meals}}</br>
+            Top Ranked: {{this.rank}}</br>
+            <div class="synop">
+                {{this.synop}}</br>
+            </div>  
+        </div>
+        {{/each}}
+    {{else}}
+        {{#each cuisines }}
+        <div>
+            <a href='/shopping/purchase?_id={{this._id}}'><img src="{{this.image}}"></img></a></br>
+            {{this.name}}, {{this.country}}</br>
+            CAD : {{this.price}}</br>
+            Meals : {{this.meals}}</br>
+            Top Ranked: {{this.rank}}</br>
+            <div class="synop">
+                {{this.synop}}</br>
+            </div>  
+        </div>
+        {{/each}}
+    {{/if}}
 </div>

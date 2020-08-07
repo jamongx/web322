@@ -14,7 +14,7 @@ const content =
     {
         return this.fakeDB;
     }
-}
+};
 
 content.init();
 module.exports = content;

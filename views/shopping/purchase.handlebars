@@ -1,0 +1,12 @@
+<div class="flex-input">
+    <form action="/shopping/addtocart" method="POST">
+        <h3>Purchase Cuisine Package</h3></br>
+        <img src="{{formData.image}}"></img></br>
+        <input readonly value={{formData.name}}></br>
+        <textarea readonly rows="10" cols="30">{{formData.synop}}</textarea></br>
+        <input readonly value="CAD: {{formData.price}}"></br>
+        <input readonly value="MEALS: {{formData.meals}}"></br>
+        <input type="hidden" id="_id" name="_id" value="{{formData._id}}">  
+        <input type="submit" value="Add to Cart">
+    </form>
+</div>
