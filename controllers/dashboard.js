@@ -1,18 +1,21 @@
 const express = require('express')
 const router = express.Router();
+const { check, validationResult } = require('express-validator');
 
 const Cuisine = require('../models/cuisines');
 const multer = require('multer');
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, `public/img/${req.body.country.toLowerCase()}/`);
-            },
-            filename: function (req, file, cb) {
+            //cb(null, `public/img/${req.body.country.toLowerCase()}/`);
+            cb(null, `public/img/cuisines/`);
+        },
+        filename: function (req, file, cb) {
             cb(null, file.originalname);
         }
     }),
 });
+
 
 router.get("/employee", (req, res) => {
 
@@ -52,31 +55,39 @@ router.get("/create", (req,res) => {
     });
 });
 
-
 //process registration form for when user submits form
 // image -> name of input
-router.post("/create", upload.single("image"), (req,res)=>{
+router.post("/create", upload.single("image"), [
+    check('rank').notEmpty().withMessage('Rank is required.'),
+    check('country').notEmpty().withMessage('Country is required.'),
+    check('meals').isInt({ gt: 0 }).withMessage('Meals is required.'),
+    check('name').notEmpty().withMessage('Name is required.'),
+    check('price').isFloat({ gt: 0 }).withMessage('Price is required.'),
+    check('synop').notEmpty().withMessage('Description is required.')
+], (req,res)=>{
 
-    const {rank,country,meals,name,price,image,synop} = req.body;
+    const {rank,country,meals,name,price,synop} = req.body;
 
-    const errors = [];
-    if (name.length <= 0) {
-        errors.push("Name is required.");
+    // image validation
+    let image = "";
+    let errorImage = "";
+    if(req.file !== undefined) {
+        image = req.file.destination.substr(6) +req.file.originalname;
+        if (!image.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
+            errorImage = `Wrong file: ${req.file.originalname} ${os.EOL}, PNG, JPG, and GIF files are allowed.`;
+        }
     }
-    if (meals <= 0) {
-        errors.push("Meals should be bigger than 0");
-    }
-    if (price <= 0) {
-        errors.push("Price should be bigger than 0");
-    }
-    if (image === undefined) {
-        errors.push("Image is required.");
-    }
-    if (synop.length <= 0) {
-        errors.push("Synop is required.");
+    else {
+        errorImage = "Image is required.";
     }
 
-    if (errors.length > 0) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty() || errorImage !== "") {
+        const temp = [];
+        errors.array().forEach(function(err) {
+            temp.push(err.msg);
+        });
+
         res.render("dashboard/create",{
             title:"Create Cuisine Package Page",
             formData: {
@@ -85,13 +96,16 @@ router.post("/create", upload.single("image"), (req,res)=>{
                 meals: meals,
                 name: name,
                 price: price,
+                image: image,
                 synop: synop,
-                errorMeals: errors.filter(name => name.includes('Meals')), 
-                errorName: errors.filter(name => name.includes('Name')),
-                errorPrice: errors.filter(name => name.includes('Price')),
-                errorImage: errors.filter(name => name.includes('Image')),
-                errorEmail: errors.filter(name => name.includes('Email')),
-                errorSynop: errors.filter(name => name.includes('Synop'))
+                errorRank: temp.filter(name => name.includes('Rank')),
+                errorCountry: temp.filter(name => name.includes('Country')),
+                errorMeals: temp.filter(name => name.includes('Meals')), 
+                errorName: temp.filter(name => name.includes('Name')),
+                errorPrice: temp.filter(name => name.includes('Price')),
+                errorImage: errorImage,
+                errorEmail: temp.filter(name => name.includes('Email')),
+                errorSynop: temp.filter(name => name.includes('Description'))
             }
         });
     }
@@ -102,7 +116,7 @@ router.post("/create", upload.single("image"), (req,res)=>{
             meals:   meals,
             name:    name,
             price:   price,
-            image:   req.file.destination.substr(6) +req.file.originalname, // remove public (sizeof->6)
+            image:   image,
             synop:   synop
         });
 
@@ -111,7 +125,6 @@ router.post("/create", upload.single("image"), (req,res)=>{
             res.redirect(`./read/?_id=${cuisine._id}`);
         })
         .catch((err) => {
-            // send status (error)
             console.log(err);
         });
 
@@ -159,7 +172,7 @@ router.get("/update", (req,res) => {
                 meals: cuisine.meals,
                 name: cuisine.name,
                 price: cuisine.price,
-                image: cuisine.image,
+                imageOrg: cuisine.image,
                 synop: cuisine.synop    
             }      
         });
@@ -173,25 +186,32 @@ router.get("/update", (req,res) => {
 //process registration form for when user submits form
 // image -> name of input
 // console.log("[post] update, req.body" +req.body); -> an error occurs
-router.post("/update", upload.single("image"), (req,res)=>{
+router.post("/update", upload.single("image"), [
+    check('meals').isInt({ gt: 0 }).withMessage('Meals is required.'),
+    check('name').notEmpty().withMessage('Name is required.'),
+    check('price').isFloat({ gt: 0 }).withMessage('Price is required.'),
+    check('synop').notEmpty().withMessage('Description is required.')
+], (req,res)=>{
+    
+    const {_id, rank,country,meals,name,price,imageOrg,synop} = req.body;
 
-    const {_id,rank,country,meals,name,price,image,synop} = req.body;
-
-    const errors = [];
-    if (name.length <= 0) {
-        errors.push("Name is required.");
-    }
-    if (meals <= 0) {
-        errors.push("Meals should be bigger than 0");
-    }
-    if (price <= 0) {
-        errors.push("Price should be bigger than 0");
-    }
-    if (synop.length <= 0) {
-        errors.push("Synop is required.");
+    // image validation
+    let image = "";
+    let errorImage = "";
+    if(req.file !== undefined) {
+        image = req.file.destination.substr(6) +req.file.originalname;
+        if (!image.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
+            errorImage = `Wrong file: ${req.file.originalname}, PNG, JPG, and GIF files are allowed.`;
+        }
     }
 
-    if (errors.length > 0) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty() || errorImage !== "") {
+        const temp = [];
+        errors.array().forEach(function(err) {
+            temp.push(err.msg);
+        });
+
         res.render("dashboard/update", {
             title:"Update Cuisine Package Page",
             formData: {
@@ -201,20 +221,21 @@ router.post("/update", upload.single("image"), (req,res)=>{
                 meals: meals,
                 name: name,
                 price: price,
-                image: image,
+                imageOrg: imageOrg, // display the previous image again because of an error case
                 synop: synop,
-                errorMeals: errors.filter(name => name.includes('Meals')), 
-                errorName: errors.filter(name => name.includes('Name')),
-                errorPrice: errors.filter(name => name.includes('Price')),
-                errorEmail: errors.filter(name => name.includes('Email')),
-                errorSynop: errors.filter(name => name.includes('Synop'))
-            }    
+                errorMeals: temp.filter(name => name.includes('Meals')), 
+                errorName: temp.filter(name => name.includes('Name')),
+                errorPrice: temp.filter(name => name.includes('Price')),
+                errorImage: errorImage,
+                errorEmail: temp.filter(name => name.includes('Email')),
+                errorSynop: temp.filter(name => name.includes('Description'))
+            }
         });
     }
     else {
         let setter = { rank: rank, country: country, meals: meals, name: name, price: price, synop: synop, };
-        if(req.file) {
-            setter["image"] = req.file.destination.substr(6) +req.file.originalname;
+        if(image !== "") {
+            setter["image"] = image;
         }
         
         Cuisine.findByIdAndUpdate( _id, setter )

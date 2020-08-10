@@ -4,19 +4,23 @@
 
         <label for="rank">Rank</label><br>
         <select name="rank" id="rank">
+            <option value="" selected>None</option>
             <option value="false">false</option>
             <option value="true">true</option>
         </select><br>
+        <div class="errorMsg">{{formData.errorRank}}</div>
 
         <label for="country">Country</label><br>
         <select name="country" id="country">
+            <option value="" selected>None</option>            
             <option value="Korean">Korean</option>
             <option value="Italian">Italian</option>
             <option value="Mexican">Mexican</option>
             <option value="Indian">Indian</option>
         </select><br>
+        <div class="errorMsg">{{formData.errorCountry}}</div>        
 
-        <input type="number" id="meals" name="meals" min="1" max="5" placeholder="Enter Meals" value="{{formData.meals}}">
+        <input type="number" id="meals" name="meals" placeholder="Enter Meals" value="{{formData.meals}}">
         <div class="errorMsg">{{formData.errorMeals}}</div>
 
         <input type="text" id="name" name="name" placeholder="Enter Name" value="{{formData.name}}">
@@ -25,7 +29,7 @@
         <input type="number" id="price" name="price" placeholder="Enter Price" value="{{formData.price}}">
         <div class="errorMsg">{{formData.errorPrice}}</div>
 
-        <input type="file" id="image" name="image" accept=".jpg">
+        <input type="file" id="image" name="image" placeholder="{{formData.image}}">
         <div class="errorMsg">{{formData.errorImage}}</div>
         
         <textarea id="synop" name="synop" rows="10" cols="30" placeholder="Enter Description" value="{{formData.synop}}"></textarea>

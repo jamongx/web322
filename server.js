@@ -1,5 +1,6 @@
 const express = require("express");
 const exphbs  = require('express-handlebars');
+const handlebars = require('./helpers/handlebars.helper')(exphbs);
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -14,8 +15,10 @@ require('dotenv').config({path:"./config/keys.env"});
 const app = express();
 
 //Handlebars middleware (This tells Express to set handlebars as the template engine)
-app.engine('handlebars', exphbs());
+app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
+//app.engine('hbs', hbs.engine);
+//app.set('view engine', 'hbs');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,7 +41,6 @@ const shoppingController  = require("./controllers/shopping");
 
 // global variable
 app.use(function(req, res, next) {
-    // res.locals.session = req.session;
     res.locals.authorized = req.session.authorized;
     res.locals.user = req.session.user;
     res.locals.cart = req.session.cart;
@@ -52,11 +54,9 @@ app.use("/dashboard", dashboardController);
 app.use("/shopping", shoppingController);
 
 
-// parameter: id, passwrod
 databaseModel.init(process.env.MONGO_DB)
 .then(function() {
     //sets up server
-    //const PORT = process.env.PORT;
     const PORT= process.env.PORT || 3000;
     app.listen(PORT,()=>{
         console.log(`Web Server is up and running`);    

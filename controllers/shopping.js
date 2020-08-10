@@ -87,8 +87,6 @@ router.post('/purchase', (req, res) => {
 
 });
 
-
-
 router.post('/addtocart', (req, res) => {
 
     const _id = req.body._id;

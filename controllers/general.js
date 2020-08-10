@@ -51,7 +51,7 @@ router.get("/login",(req,res)=>{
 
 
 router.post("/login", [
-    check('email').not().isEmpty().withMessage('Email is required.'),
+    check('email').isEmail().withMessage('Email is required.'),
     check('password').not().isEmpty().withMessage('Password is required.')
 ], (req,res)=>{
 
@@ -77,10 +77,8 @@ router.post("/login", [
         User.findOne({email:email})
         .exec()
         .then(user => {
-            bcrypt.compare(password, user.password, (err, result) => {
-                if(!err && result) {
-                    // (1) express-session을 사용하면 request.session 이라는 객체가 생성됩니다.
-                    // 해당하는 객체에 property를 할당함으로써 세션에 값을 줍니다.
+            bcrypt.compare(password, user.password, (err, success) => {
+                if(!err && success) {
                     req.session.authorized = true;
                     req.session.user = {
                         firstName: user.firstName,
@@ -88,12 +86,14 @@ router.post("/login", [
                         email: user.email,
                         clerk: user.clerk
                     };
-                    //세션 스토어가 이루어진 후 redirect를 해야함.
+
                     req.session.save(function() {
-                        // (2) 세션을 세션 스토어에 저장이 끝나면 function()이 실행됩니다.
-                        // save() 부분이 없다면, session store에 저장하는 일보다
-                        // redirect가 먼저 실행되어 로그인 상태가 유지가 안되는 버그(?)가 발생할 수 있습니다.
-                        res.redirect('/');
+                        if(req.session.user.clerk) {
+                            res.redirect('/dashboard/employee');
+                        }
+                        else {
+                            res.redirect('/shopping/customer');
+                        }
                     });
                 }
                 else {
@@ -118,7 +118,7 @@ router.post("/login", [
 //logout route
 router.get("/logout",(req,res)=>{
 
-    req.session.destroy(function(err){
+    req.session.destroy(function(err) {
         res.redirect("./login");
     });
 });
@@ -185,17 +185,16 @@ router.post("/registration", (req,res)=>{
             lastName: lastName
         });
 
-
         // Generate a "salt" using 10 rounds
         bcrypt.genSalt(10, function (err, salt) {
             bcrypt.hash(newUser.password, salt, function(err, hash) {
                 if(err) {
                     throw err;
                 }
-
                 newUser.password = hash;
                 newUser.save()
                 .then((user) => {
+                    // send email
                     const sgMail = require('@sendgrid/mail');
                     sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
                     const msg = {
@@ -209,13 +208,37 @@ router.post("/registration", (req,res)=>{
                     };
             
                     sgMail.send(msg)
-                    .then(() => {
-                        res.redirect(`/dashboard/?param1=${user.firstName}&param2=${user.lastName}&param3=${user.email}`);
-                    })
                     .catch((err) => {
                         console.log(err);
                     });
 
+                    // send email
+                    User.findOne({email:email})
+                    .exec()
+                    .then(user => {
+                        bcrypt.compare(password, user.password, (err, success) => {
+                            if(!err && success) {
+                                req.session.authorized = true;
+                                req.session.user = {
+                                    firstName: user.firstName,
+                                    lastName: user.lastName,
+                                    email: user.email,
+                                    clerk: user.clerk
+                                };
+            
+                                req.session.save(function() {
+                                    if(req.session.user.clerk) {
+                                        res.redirect('/dashboard/employee');
+                                    }
+                                    else {
+                                        res.redirect('/shopping/customer');
+                                    }
+                                });
+                            }
+                        });
+                    }).catch((err) => {
+                        console.log(err);
+                    });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -235,7 +258,12 @@ router.post("/registration", (req,res)=>{
                     .catch(err=>{
                         console.log(err);
                     });
+    
                 });
+
+
+
+
             });
         });
     }

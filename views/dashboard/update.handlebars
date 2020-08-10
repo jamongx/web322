@@ -4,21 +4,25 @@
 
         <label for="rank">Rank</label><br>
         <select name="rank" id="rank">
-            <option value="false">false</option>
-            <option value="true">true</option>
+            {{#select formData.rank}}
+                <option value="false">false</option>
+                <option value="true">true</option>
+            {{/select}}
         </select><br>
 
         <label for="country">Country</label><br>
         <select name="country" id="country">
-            <option value="Korean">Korean</option>
-            <option value="Italian">Italian</option>
-            <option value="Mexican">Mexican</option>
-            <option value="Indian">Indian</option>
+            {{#select formData.country}}
+                <option value="Korean">Korean</option>
+                <option value="Italian">Italian</option>
+                <option value="Mexican">Mexican</option>
+                <option value="Indian">Indian</option>
+            {{/select}}
         </select><br>
 
         <input type="hidden" id="_id" name="_id" value="{{formData._id}}">
 
-        <input type="number" id="meals" name="meals" min="1" max="5" placeholder="Enter Meals" value="{{formData.meals}}">
+        <input type="number" id="meals" name="meals" placeholder="Enter Meals" value="{{formData.meals}}">
         <div class="errorMsg">{{formData.errorMeals}}</div>
 
         <input type="text" id="name" name="name" placeholder="Enter Name" value="{{formData.name}}">
@@ -27,8 +31,10 @@
         <input type="number" id="price" name="price" placeholder="Enter Price" value="{{formData.price}}">
         <div class="errorMsg">{{formData.errorPrice}}</div>
 
-        <img src="{{formData.image}}"></img></br>
-        <input type="file" id="image" name="image" accept=".jpg">
+        <img src="{{formData.imageOrg}}"></img></br>
+        <input type="hidden" id="imageOrg" name="imageOrg" value="{{formData.imageOrg}}">
+        
+        <input type="file" id="image" name="image">
         <div class="errorMsg">{{formData.errorImage}}</div>
         
         <textarea id="synop" name="synop" rows="10" cols="30" >{{formData.synop}}</textarea>
