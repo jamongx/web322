@@ -8,7 +8,7 @@ const contentModel = require("../models/contents");
 const User = require('../models/users');
 const Cuisine = require('../models/cuisines');
 
-//home route
+
 router.get("/",(req,res)=>{
 
     Cuisine.find({rank: true})
@@ -40,8 +40,7 @@ router.get("/",(req,res)=>{
     });
 });
 
-//login route
-//cuisineModel.seeding();
+
 router.get("/login",(req,res)=>{
 
     res.render("general/login",{
@@ -115,7 +114,6 @@ router.post("/login", [
 });
 
 
-//logout route
 router.get("/logout",(req,res)=>{
 
     req.session.destroy(function(err) {
@@ -124,7 +122,6 @@ router.get("/logout",(req,res)=>{
 });
 
 
-//registration route
 router.get("/registration",(req,res)=>{
 
     res.render("general/registration",{
@@ -133,7 +130,6 @@ router.get("/registration",(req,res)=>{
 });
 
 
-//process registration form for when user submits form
 router.post("/registration", (req,res)=>{
 
     const {firstName,lastName,email,password} = req.body;

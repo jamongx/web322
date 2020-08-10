@@ -47,7 +47,6 @@ router.get("/employee", (req, res) => {
 });
 
 
-//route create handlebars page
 router.get("/create", (req,res) => {
 
     res.render("dashboard/create",{
@@ -55,8 +54,7 @@ router.get("/create", (req,res) => {
     });
 });
 
-//process registration form for when user submits form
-// image -> name of input
+
 router.post("/create", upload.single("image"), [
     check('rank').notEmpty().withMessage('Rank is required.'),
     check('country').notEmpty().withMessage('Country is required.'),
@@ -88,7 +86,7 @@ router.post("/create", upload.single("image"), [
             temp.push(err.msg);
         });
 
-        // delete uploaded file
+        // delete the uploaded file
         fs.unlink(req.file.destination+req.file.originalname, (err) => {
             if (err) {
                 console.error(err);
@@ -139,8 +137,6 @@ router.post("/create", upload.single("image"), [
 });
 
 
-
-//home route
 router.get("/read",(req,res)=>{
     Cuisine.findById(req.query._id)
     .exec()
@@ -165,7 +161,6 @@ router.get("/read",(req,res)=>{
 });
 
 
-//route update handlebars page
 router.get("/update", (req,res) => {
     Cuisine.findById(req.query._id)
     .exec()
@@ -190,9 +185,6 @@ router.get("/update", (req,res) => {
 });
 
 
-//process registration form for when user submits form
-// image -> name of input
-// console.log("[post] update, req.body" +req.body); -> an error occurs
 router.post("/update", upload.single("image"), [
     check('meals').isInt({ gt: 0 }).withMessage('Meals is required.'),
     check('name').notEmpty().withMessage('Name is required.'),
@@ -219,7 +211,7 @@ router.post("/update", upload.single("image"), [
             temp.push(err.msg);
         });
 
-        // delete uploaded file
+        // delete the uploaded file
         fs.unlink(req.file.destination+req.file.originalname, (err) => {
             if (err) {
                 console.error(err);
@@ -269,7 +261,6 @@ router.get("/delete", (req,res) => {
     Cuisine.findOneAndRemove( {_id: req.query._id} )
     .exec()
     .then((cuisine) => {
-        console.log("public" +cuisine.image);
         fs.unlink("public" +cuisine.image, (err) => {
             if (err) {
                 console.error(err);

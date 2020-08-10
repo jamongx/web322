@@ -17,8 +17,6 @@ const app = express();
 //Handlebars middleware (This tells Express to set handlebars as the template engine)
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
-//app.engine('hbs', hbs.engine);
-//app.set('view engine', 'hbs');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -56,7 +54,7 @@ app.use("/shopping", shoppingController);
 
 databaseModel.init(process.env.MONGO_DB)
 .then(function() {
-    //sets up server
+
     const PORT= process.env.PORT || 3000;
     app.listen(PORT,()=>{
         console.log(`Web Server is up and running`);    
