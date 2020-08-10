@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const fs = require('fs');
 
 const Cuisine = require('../models/cuisines');
 const multer = require('multer');
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
-            //cb(null, `public/img/${req.body.country.toLowerCase()}/`);
             cb(null, `public/img/cuisines/`);
         },
         filename: function (req, file, cb) {
@@ -86,6 +86,13 @@ router.post("/create", upload.single("image"), [
         const temp = [];
         errors.array().forEach(function(err) {
             temp.push(err.msg);
+        });
+
+        // delete uploaded file
+        fs.unlink(req.file.destination+req.file.originalname, (err) => {
+            if (err) {
+                console.error(err);
+            }
         });
 
         res.render("dashboard/create",{
@@ -212,6 +219,13 @@ router.post("/update", upload.single("image"), [
             temp.push(err.msg);
         });
 
+        // delete uploaded file
+        fs.unlink(req.file.destination+req.file.originalname, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+
         res.render("dashboard/update", {
             title:"Update Cuisine Package Page",
             formData: {
@@ -251,9 +265,16 @@ router.post("/update", upload.single("image"), [
 
 
 router.get("/delete", (req,res) => {
-    Cuisine.deleteOne( {_id: req.query._id} )
+
+    Cuisine.findOneAndRemove( {_id: req.query._id} )
     .exec()
-    .then(() => {
+    .then((cuisine) => {
+        console.log("public" +cuisine.image);
+        fs.unlink("public" +cuisine.image, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
         res.redirect(`./employee`);
     })
     .catch(err=>{
