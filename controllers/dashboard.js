@@ -87,11 +87,13 @@ router.post("/create", upload.single("image"), [
         });
 
         // delete the uploaded file
-        fs.unlink(req.file.destination+req.file.originalname, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        });
+        if(req.file !== undefined) {
+            fs.unlink(req.file.destination+req.file.originalname, (err) => {
+                if (err) {
+                    console.error(err);
+                }
+            });    
+        }
 
         res.render("dashboard/create",{
             title:"Create Cuisine Package Page",
@@ -212,11 +214,13 @@ router.post("/update", upload.single("image"), [
         });
 
         // delete the uploaded file
-        fs.unlink(req.file.destination+req.file.originalname, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        });
+        if(req.file !== undefined) {
+            fs.unlink(req.file.destination+req.file.originalname, (err) => {
+                if (err) {
+                    console.error(err);
+                }
+            });    
+        }
 
         res.render("dashboard/update", {
             title:"Update Cuisine Package Page",
