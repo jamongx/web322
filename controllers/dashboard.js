@@ -72,7 +72,7 @@ router.post("/create", upload.single("image"), [
     if(req.file !== undefined) {
         image = req.file.destination.substr(6) +req.file.originalname;
         if (!image.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
-            errorImage = `Wrong file: ${req.file.originalname} ${os.EOL}, PNG, JPG, and GIF files are allowed.`;
+            errorImage = `Wrong file: ${req.file.originalname}, PNG, JPG, and GIF files are allowed.`;
         }
     }
     else {
