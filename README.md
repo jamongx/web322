@@ -3,8 +3,8 @@
 
 
 ## Login account
-- Regular User: jamongx@gmail.com / wozh7510
-- Clerk: alice@gmail.com / abcd1234
+- Regular User: user@gmail.com / abcd1234
+- Clerk: clerk@gmail.com / abcd1234
 
 
 ## Application Architecture
